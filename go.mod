@@ -3,7 +3,7 @@ module github.com/fugue-labs/gollem-langsmith
 go 1.25.1
 
 require (
-	github.com/fugue-labs/gollem v0.0.0
+	github.com/fugue-labs/gollem v0.1.2
 	github.com/google/uuid v1.6.0
 	github.com/langchain-ai/langsmith-go v0.1.0
 )
@@ -33,9 +33,4 @@ require (
 	google.golang.org/genproto/googleapis/rpc v0.0.0-20250825161204-c5933d9347a5 // indirect
 	google.golang.org/grpc v1.75.0 // indirect
 	google.golang.org/protobuf v1.36.9 // indirect
-)
-
-replace (
-	github.com/fugue-labs/gollem => ../gollem
-	github.com/langchain-ai/langsmith-go => ../langsmith-go
 )
