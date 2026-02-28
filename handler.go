@@ -83,6 +83,14 @@ func (h *Handler) onRunStart(ctx context.Context, rc *core.RunContext, prompt st
 		dottedOrder = parent.ParentDotted + "." + formatDottedOrder(now, id)
 	} else {
 		// Root agent: start a new trace.
+		// Use pre-set trace ID if configured (allows caller to know the ID
+		// before the run starts, e.g. for logging). Only used once.
+		h.mu.Lock()
+		if h.cfg.traceID != "" {
+			id = h.cfg.traceID
+			h.cfg.traceID = "" // consume: subsequent root runs get fresh IDs
+		}
+		h.mu.Unlock()
 		traceID = id
 		dottedOrder = formatDottedOrder(now, id)
 	}

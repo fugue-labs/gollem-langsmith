@@ -17,6 +17,7 @@ type config struct {
 	flushInterval time.Duration
 	bufferSize    int
 	logger        *log.Logger
+	traceID       string // pre-set trace ID for root runs
 }
 
 func defaultConfig() config {
@@ -69,4 +70,11 @@ func WithBufferSize(n int) Option {
 // WithLogger sets a logger for trace diagnostics.
 func WithLogger(l *log.Logger) Option {
 	return func(cfg *config) { cfg.logger = l }
+}
+
+// WithTraceID sets a pre-determined trace ID for root agent runs.
+// This allows the caller to know the trace ID before the agent starts,
+// e.g. for logging or post-run score injection.
+func WithTraceID(id string) Option {
+	return func(cfg *config) { cfg.traceID = id }
 }
