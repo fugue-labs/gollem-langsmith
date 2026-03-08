@@ -233,7 +233,7 @@ func (h *Handler) onModelResponse(ctx context.Context, rc *core.RunContext, resp
 	h.batch.PatchRun(patch)
 }
 
-func (h *Handler) onToolStart(ctx context.Context, rc *core.RunContext, toolName string, argsJSON string) {
+func (h *Handler) onToolStart(ctx context.Context, rc *core.RunContext, toolCallID string, toolName string, argsJSON string) {
 	now := time.Now().UTC()
 	id := uuid.New().String()
 
@@ -244,7 +244,7 @@ func (h *Handler) onToolStart(ctx context.Context, rc *core.RunContext, toolName
 		return
 	}
 
-	key := fmt.Sprintf("%s:%s", rc.RunID, rc.ToolCallID)
+	key := fmt.Sprintf("%s:%s", rc.RunID, toolCallID)
 	dottedOrder := parent.DottedOrder + "." + formatDottedOrder(now, id)
 
 	ri := &runInfo{
@@ -275,9 +275,9 @@ func (h *Handler) onToolStart(ctx context.Context, rc *core.RunContext, toolName
 	h.batch.PostRun(run)
 }
 
-func (h *Handler) onToolEnd(ctx context.Context, rc *core.RunContext, toolName string, result string, err error) {
+func (h *Handler) onToolEnd(ctx context.Context, rc *core.RunContext, toolCallID string, toolName string, result string, err error) {
 	now := time.Now().UTC()
-	key := fmt.Sprintf("%s:%s", rc.RunID, rc.ToolCallID)
+	key := fmt.Sprintf("%s:%s", rc.RunID, toolCallID)
 
 	h.mu.Lock()
 	ri, ok := h.toolRuns[key]

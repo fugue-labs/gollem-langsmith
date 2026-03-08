@@ -34,3 +34,5 @@ require (
 	google.golang.org/grpc v1.75.0 // indirect
 	google.golang.org/protobuf v1.36.9 // indirect
 )
+
+replace github.com/fugue-labs/gollem => ../gollem

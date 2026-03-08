@@ -80,8 +80,8 @@ func TestHandlerHookLifecycle(t *testing.T) {
 	})
 
 	rc.ToolCallID = "tool-call-1"
-	hook.OnToolStart(ctx, rc, "search", `{"query":"test"}`)
-	hook.OnToolEnd(ctx, rc, "search", "result data", nil)
+	hook.OnToolStart(ctx, rc, "tool-call-1", "search", `{"query":"test"}`)
+	hook.OnToolEnd(ctx, rc, "tool-call-1", "search", "result data", nil)
 
 	hook.OnRunEnd(ctx, rc, nil, nil)
 
@@ -129,7 +129,7 @@ func TestHandlerNestedTrace(t *testing.T) {
 
 	// Simulate a tool call that will delegate to an inner agent.
 	outerRC.ToolCallID = "delegate-call"
-	hook.OnToolStart(ctx, outerRC, "delegate", `{"prompt":"inner task"}`)
+	hook.OnToolStart(ctx, outerRC, "delegate-call", "delegate", `{"prompt":"inner task"}`)
 
 	// Get the tool run info to inject parent context.
 	toolRI := h.GetToolRunInfo("outer-run", "delegate-call")
@@ -147,7 +147,7 @@ func TestHandlerNestedTrace(t *testing.T) {
 	hook.OnRunStart(innerCtx, innerRC, "inner prompt")
 	hook.OnRunEnd(innerCtx, innerRC, nil, nil)
 
-	hook.OnToolEnd(ctx, outerRC, "delegate", "done", nil)
+	hook.OnToolEnd(ctx, outerRC, "delegate-call", "delegate", "done", nil)
 	hook.OnRunEnd(ctx, outerRC, nil, nil)
 
 	h.Close()
